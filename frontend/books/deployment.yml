@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-deployment
+  labels:
+    app: books
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: books
+  template:
+    metadata:
+      labels:
+        app: books
+    spec:
+      containers:
+      - name: books
+        image: 239109941322.dkr.ecr.us-east-1.amazonaws.com/shopping-site-books:6111e0614df0b1f5400f5719bc339e11492ea39f
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: books-service
+  labels:
+    app: books
+spec:
+  type: ClusterIP
+  selector:
+    app: books
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

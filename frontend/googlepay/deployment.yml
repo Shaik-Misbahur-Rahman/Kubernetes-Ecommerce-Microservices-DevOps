@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: googlepay-deployment
+  labels:
+    app: googlepay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: googlepay
+  template:
+    metadata:
+      labels:
+        app: googlepay
+    spec:
+      containers:
+      - name: googlepay
+        image: 239109941322.dkr.ecr.us-east-1.amazonaws.com/shopping-site-googlepay:6111e0614df0b1f5400f5719bc339e11492ea39f
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: googlepay-service
+  labels:
+    app: googlepay
+spec:
+  type: ClusterIP
+  selector:
+    app: googlepay
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
